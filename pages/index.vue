@@ -1,8 +1,7 @@
 <template>
   <div class="Prefectures">
-    <div>{{ selectedPrefuctures }}</div>
     <div>
-      <v-btn depressed color="info"> 全解除 </v-btn>
+      <v-btn depressed color="info" @click="allClear"> 全解除 </v-btn>
     </div>
     <div class="Prefectures_PrefectureWrapper">
       <template v-for="(prefecture, index) in prefectures">
@@ -11,18 +10,25 @@
             v-model="selectedPrefuctures"
             :label="prefecture.prefName"
             color="info"
-            :value="prefecture.prefName"
+            :value="prefecture.prefCode"
             hide-details
           ></v-checkbox>
         </div>
       </template>
     </div>
+    <div>
+      <LineChart />
+    </div>
   </div>
 </template>
 
 <script>
+import LineChart from '@/components/LineChart.vue'
 export default {
   name: 'PopulationTransitionAppIndex',
+  components: {
+    LineChart,
+  },
   data() {
     return {
       test: 'yohei',
