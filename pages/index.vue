@@ -16,7 +16,7 @@
         </div>
       </template>
     </div>
-    <div>
+    <div class="Prefectures_PrefectureChartWrapper">
       <LineChart />
     </div>
   </div>
