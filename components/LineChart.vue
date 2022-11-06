@@ -3,39 +3,57 @@ import { Line } from 'vue-chartjs'
 
 export default {
   extends: Line,
+  props: {
+    selectedPrefectures: {
+      type: Array,
+      default: () => [],
+    },
+    dataSets: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       chartData: {
-        labels: ['', 'January', 'February', 'y', 'h', 'j', 'i', 'l'],
-        datasets: [
-          {
-            type: 'line',
-            data: [0, 10, 60, 20, 40, 50, 10, 20],
-            label: '人口推移',
-            borderWidth: 3,
-            fill: false,
-            lineTension: 0.1,
-            order: 1,
-            borderColor: 'green',
-          },
-          {
-            type: 'line',
-            data: [0, 100, 10, 50, 10, 90, 10, 20],
-            label: '人口推移',
-            borderWidth: 3,
-            fill: false,
-            lineTension: 0.1,
-            order: 1,
-            borderColor: 'pink',
-            pointBackgroundColor: 'green',
-          },
+        labels: [
+          '1985',
+          '1990',
+          '1995',
+          '2000',
+          '2005',
+          '2010',
+          '2015',
+          '2020',
+          '2025',
+          '2030',
+          '2035',
+          '2040',
+          '2045',
         ],
+        datasets: [],
       },
       options: {
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
       },
     }
+  },
+  watch: {
+    selectedPrefectures: {
+      handler() {
+        const converDataSetsToJson = JSON.stringify(this.selectedPrefectures)
+        localStorage.setItem('key_name', converDataSetsToJson)
+      },
+      deep: true,
+    },
+    dataSets: {
+      handler() {
+        this.chartData.datasets = this.dataSets
+        this.renderChart(this.chartData, this.options)
+      },
+      immediate: false,
+    },
   },
   mounted() {
     this.renderChart(this.chartData, this.options)

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-app>
+    <main>
       <Nuxt />
-    </v-app>
+    </main>
   </div>
 </template>
 
@@ -11,3 +11,10 @@ export default {
   name: 'DefaultLayout',
 }
 </script>
+
+<style lang="scss" scoped>
+main {
+  width: 80%;
+  margin: 0 auto;
+}
+</style>
