@@ -4,10 +4,6 @@ import { Line } from 'vue-chartjs'
 export default {
   extends: Line,
   props: {
-    selectedPrefectures: {
-      type: Array,
-      default: () => [],
-    },
     dataSets: {
       type: Array,
       default: () => [],
@@ -40,22 +36,24 @@ export default {
     }
   },
   watch: {
-    selectedPrefectures: {
-      handler() {
-        const converDataSetsToJson = JSON.stringify(this.selectedPrefectures)
-        localStorage.setItem('key_name', converDataSetsToJson)
-      },
-      deep: true,
-    },
     dataSets: {
       handler() {
-        this.chartData.datasets = this.dataSets
+        const convertDataSetsToJson = JSON.stringify(this.dataSets)
+        localStorage.setItem('dataSets', convertDataSetsToJson)
+        const getDataSetsFromLocalStrage = JSON.parse(
+          localStorage.getItem('dataSets')
+        )
+        this.chartData.datasets = getDataSetsFromLocalStrage
         this.renderChart(this.chartData, this.options)
       },
       immediate: false,
     },
   },
   mounted() {
+    const getDataSetsFromLocalStrage = JSON.parse(
+      localStorage.getItem('dataSets')
+    )
+    this.chartData.datasets = getDataSetsFromLocalStrage
     this.renderChart(this.chartData, this.options)
   },
 }

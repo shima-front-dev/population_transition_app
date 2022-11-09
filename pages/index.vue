@@ -1,9 +1,8 @@
 <template>
   <div class="Prefectures">
     <div class="PrefecturesWrapper">
-      <div>
-        <v-btn depressed color="info" @click="allClear"> 全解除 </v-btn>
-      </div>
+      <h2>都道府県別人口推移</h2>
+      <button class="allClearButton" @click="allClear">全解除</button>
       <div class="Prefectures_CheckboxWrapper">
         <template v-for="(prefecture, index) in prefectures">
           <div :key="index" class="Prefectures_CheckboxContent">
@@ -24,10 +23,9 @@
         </template>
       </div>
       <div class="Prefectures_PrefectureChartWrapper">
-        <LineChart
-          :selected-prefectures="selectedPrefectures"
-          :data-sets="dataSets"
-        />
+        <div>
+          <LineChart :data-sets="dataSets" />
+        </div>
       </div>
     </div>
   </div>
@@ -35,6 +33,7 @@
 
 <script>
 import LineChart from '@/components/LineChart.vue'
+import { COLORS } from '@/constants/colors'
 export default {
   name: 'PopulationTransitionAppIndex',
   components: {
@@ -56,8 +55,29 @@ export default {
       prefectures: response.result,
     }
   },
+  watch: {
+    selectedPrefectures: {
+      handler() {
+        const convertSelectedPrefecturesToJson = JSON.stringify(
+          this.selectedPrefectures
+        )
+        localStorage.setItem(
+          'selectedPrefectures',
+          convertSelectedPrefecturesToJson
+        )
+      },
+      deep: true,
+    },
+  },
   mounted() {
-    // this.getDemographics()
+    const getSelectedPrefecturesFromLocalStrage = JSON.parse(
+      localStorage.getItem('selectedPrefectures')
+    )
+    this.selectedPrefectures = getSelectedPrefecturesFromLocalStrage
+    const getDataSetsFromLocalStrage = JSON.parse(
+      localStorage.getItem('dataSets')
+    )
+    this.dataSets = getDataSetsFromLocalStrage
   },
   methods: {
     allClear() {
@@ -90,7 +110,7 @@ export default {
           fill: false,
           lineTension: 0.1,
           order: 1,
-          borderColor: 'green',
+          borderColor: COLORS[code],
         }
         this.dataSets.push(obj)
       }
@@ -100,6 +120,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h2 {
+  margin-bottom: 30px;
+}
 .Prefectures {
   max-width: 1000px;
   margin: 0 auto;
@@ -123,5 +146,11 @@ export default {
 }
 .Prefectures_PrefectureChartWrapper {
   margin-top: 50px;
+}
+.allClearButton {
+  background: rgba(3, 60, 246, 0.623);
+  color: white;
+  padding: 7px 10px;
+  border-radius: 5px;
 }
 </style>
