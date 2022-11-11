@@ -78,4 +78,7 @@ export default {
   privateRuntimeConfig: {
     apiKey: API_KEY,
   },
+  generate: {
+    dir: 'public',
+  },
 }
