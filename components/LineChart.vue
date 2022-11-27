@@ -53,6 +53,11 @@ export default {
     const getDataSetsFromLocalStrage = JSON.parse(
       localStorage.getItem('dataSets')
     )
+    if (getDataSetsFromLocalStrage === null) {
+      const array = JSON.stringify([])
+      localStorage.setItem('dataSets', array)
+      localStorage.setItem('selectedPrefectures', array)
+    }
     this.chartData.datasets = getDataSetsFromLocalStrage
     this.renderChart(this.chartData, this.options)
   },
